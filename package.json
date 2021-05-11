@@ -1,0 +1,38 @@
+{
+  "name": "video-background",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "start": "adalo dev",
+    "login": "adalo login",
+    "publish": "adalo publish"
+  },
+  "adalo": {
+    "logo": "./example-logo.png",
+    "displayName": "video background",
+    "components": [
+      {
+        "name": "BackgroundVideo",
+        "manifest": "./src/components/BackgroundVideo/manifest.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@adalo/cli": "0.0.41",
+    "react": "^16.14.0",
+    "react-art": "^16.13.1",
+    "react-dom": "^16.14.0",
+    "react-native-web": "^0.9.13"
+  },
+  "dependencies": {
+    "expo-asset": "^8.3.2",
+    "expo-av": "^9.1.2",
+    "react-native": "^0.59.10",
+    "react-native-unimodules": "^0.13.3",
+    "react-native-video": "^5.1.1",
+    "react-player": "^2.9.0"
+  }
+}
