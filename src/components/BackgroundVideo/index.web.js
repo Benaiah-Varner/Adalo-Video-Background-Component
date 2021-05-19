@@ -1,40 +1,104 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Button } from 'react-native';
 import ReactPlayer from 'react-player';
+import axiosWithAuth from '../../utilities/axiosWithAuth';
 
+const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 class BackgroundVideo extends Component {
+  state = {
+    url: [],
+    dimensions: {
+      window,
+      screen,
+    },
+  };
+
+  onChange = ({ window, screen }) => {
+    this.setState({ ...this.state, dimensions: { window, screen } });
+    console.log('dimensions ', this.state.dimensions);
+  };
+
+  componentDidMount() {
+    axiosWithAuth()
+      .get()
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          url: res.data.records,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    Dimensions.addEventListener('change', this.onChange);
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.onChange);
+  }
+
+  handlePress() {
+    console.log('test button pressed');
+  }
+
   render() {
     const { color, text } = this.props;
-    console.log(testVid);
+    const { dimensions } = this.state;
     return (
-      <View style={styles.wrapper}>
-        <Text style={styles.text}>Its up</Text>
-        <ReactPlayer url="https://www.youtube.com/watch?v=gePG1SfJYas" playing={true} />
+      <View style={styles.container}>
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <ReactPlayer
+            url={this.state.url[this.state.url.length - 2]?.Name}
+            playing={true}
+            loop={true}
+            muted={true}
+            width={dimensions.window.width}
+            height={dimensions.window.height}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              zIndex: -1,
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button onPress={this.handlePress} title="Sign Up" />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
   text: {
     color: 'red',
     fontSize: 20,
   },
-  wrapper: {
-    height: 300,
-    width: 300,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  buttonWrapper: {
+    width: '25%',
     flex: 1,
+    justifyContent: 'center',
+    marginLeft: '38%',
+    marginTop: '50%',
   },
   backgroundVideo: {
     flex: 1,
     width: '100%',
     height: '100%',
-    borderColor: 'red',
-    borderWidth: '100%',
   },
 });
 
